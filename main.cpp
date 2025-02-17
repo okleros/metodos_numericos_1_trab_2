@@ -10,6 +10,7 @@
 #include "inversa_gauss_seidel.hpp"
 
 #include "lu_decomposition.hpp"
+#include "determinant_gauss_jordan.hpp"
 
 #define MAX_ITER 1000
 
@@ -28,7 +29,7 @@ int main(int argc, const char** argv)
 
 	    b =  {12, 12, 12};
 
-	    epsilon = 1e-3;
+	    epsilon = 1e-5;
 
 	} else std::cout << "usage: ./main or ./main --default";
 
@@ -43,39 +44,37 @@ int main(int argc, const char** argv)
 	std::cin >> epsilon;
     }
 
-    /*inv_A_gauss_jacobi = inversa_gauss_jacobi(A, epsilon);
-    inv_A_gauss_seidel = inversa_gauss_seidel(A, epsilon);
+    // std::cout << "\nSolução do sistema através de Gauss-Jacobi:\n";
+    // print_matrix(transpose(Matrix(1, gauss_jacobi(A, b, epsilon, MAX_ITER))));
 
-    std::cout << "\nInversa usando Gauss-Jacobi:\n";
-    print_matrix(inv_A_gauss_jacobi);
-    
-    std::cout << "\nInversa usando Gauss-Seidel:\n";
-    print_matrix(inv_A_gauss_seidel);
+    LU* final = lu_decomposition(A);
 
-    std::cout << "\nIdentidade (MxM⁻¹) usando Gauss-Jacobi:\n";
-    print_matrix(dot(A, inv_A_gauss_jacobi));
-    
-    std::cout << "\nIdentidade (MxM⁻¹) usando Gauss-Seidel:\n";
-    print_matrix(dot(A, inv_A_gauss_seidel));
+    Vector p = solve_using_LU(final, b);
 
-    std::cout << "\nSolução do sistema através de Gauss-Jacobi:\n";
-    print_matrix(transpose(Matrix(1, gauss_jacobi(A, b, epsilon, MAX_ITER))));
+    std::cout << "Solução do sistema [p] usando fatoração LU: [ ";
+    for (auto el : p) {
+        std::cout << el << " ";
+    }
+    std::cout << "]\n";
 
-    std::cout << "\nSolução do sistema através de Gauss-Seidel:\n";
+    std::cout << "O determinante da matrix é " << determinant_gauss_jordan(A) << ".\n";
+
+    std::cout << "\nSolução do sistema através do método de Gauss-Seidel:\n";
     print_matrix(transpose(Matrix(1, gauss_seidel(A, b, epsilon, MAX_ITER))));
     
-    std::cout << "\nSolução do sistema (M⁻¹xb) Gauss-Jacobi:\n";
-    print_matrix(dot(inv_A_gauss_jacobi, transpose(Matrix(1, b))));
+    // std::cout << "\nSolução do sistema (M⁻¹xb) Gauss-Jacobi:\n";
+    // print_matrix(dot(inv_A_gauss_jacobi, transpose(Matrix(1, b))));
     
-    std::cout << "\nSolução do sistema (M⁻¹xb) Gauss-Seidel:\n";    
-    print_matrix(dot(inv_A_gauss_seidel, transpose(Matrix(1, b))));*/
+    // std::cout << "\nSolução do sistema (M⁻¹xb) Gauss-Seidel:\n";    
+    // print_matrix(dot(inv_A_gauss_seidel, transpose(Matrix(1, b))));
+    
 
-    LU* final = lu_decomposition(A, epsilon);
+    // std::cout << p << std::endl;
 
-    std::cout << "Matriz L:\n";
-    print_matrix(final->L);
-    std::cout << "\nMatriz U:\n";
-    print_matrix(final->U);
+    // std::cout << "Matriz L:\n";
+    // print_matrix(final->L);
+    // std::cout << "\nMatriz U:\n";
+    // print_matrix(final->U);
     
     return 0;
 }
