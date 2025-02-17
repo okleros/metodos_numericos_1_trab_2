@@ -99,9 +99,9 @@ void print_matrix(const Matrix& m)
 	    if (m[i][j] >= 0) std::cout << ' ';
 	    
 	    if (j != m[0].size() - 1)
-		std::cout << m[i][j] << "  ";
+		std::cout << std::setw(9) << m[i][j] << "  ";
 	    else
-		std::cout << m[i][j];
+		std::cout << std::setw(9)  << m[i][j];
 	}
 
 	std::cout << " |\n";

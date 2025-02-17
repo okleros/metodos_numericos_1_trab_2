@@ -9,6 +9,8 @@
 #include "inversa_gauss_jacobi.hpp"
 #include "inversa_gauss_seidel.hpp"
 
+#include "lu_decomposition.hpp"
+
 #define MAX_ITER 1000
 
 int main(int argc, const char** argv)
@@ -20,11 +22,11 @@ int main(int argc, const char** argv)
     
     if (argc > 1) {
         if (!strcmp(argv[1], "--default")) {
-	    A = {{5, 3, 1},
-		 {5, 6, 1},
-		 {1, 6, 7}};
+	    A = { {10,  1,  1},
+		      { 1, 10,  1},
+		      { 1,  1, 10}};
 
-	    b =  {1, 2, 3};
+	    b =  {12, 12, 12};
 
 	    epsilon = 1e-3;
 
@@ -41,7 +43,7 @@ int main(int argc, const char** argv)
 	std::cin >> epsilon;
     }
 
-    inv_A_gauss_jacobi = inversa_gauss_jacobi(A, epsilon);
+    /*inv_A_gauss_jacobi = inversa_gauss_jacobi(A, epsilon);
     inv_A_gauss_seidel = inversa_gauss_seidel(A, epsilon);
 
     std::cout << "\nInversa usando Gauss-Jacobi:\n";
@@ -66,7 +68,14 @@ int main(int argc, const char** argv)
     print_matrix(dot(inv_A_gauss_jacobi, transpose(Matrix(1, b))));
     
     std::cout << "\nSolução do sistema (M⁻¹xb) Gauss-Seidel:\n";    
-    print_matrix(dot(inv_A_gauss_seidel, transpose(Matrix(1, b))));
+    print_matrix(dot(inv_A_gauss_seidel, transpose(Matrix(1, b))));*/
+
+    LU* final = lu_decomposition(A, epsilon);
+
+    std::cout << "Matriz L:\n";
+    print_matrix(final->L);
+    std::cout << "\nMatriz U:\n";
+    print_matrix(final->U);
     
     return 0;
 }
