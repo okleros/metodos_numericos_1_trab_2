@@ -122,6 +122,22 @@ Matrix get_matrix_from_user(size_t n)
     return M;
 }
 
+Matrix mul(const Matrix& m, double k) {
+	int n = m.size();
+
+	Matrix out = Matrix(n, Vector(n, 0));
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			out[i][j] = m[i][j]*k;
+		}
+	}
+
+	return out;
+}
+
 Vector get_b_from_user(size_t n)
 {
     Vector b(n, 0.0);

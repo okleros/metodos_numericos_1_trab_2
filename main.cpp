@@ -11,6 +11,7 @@
 
 #include "lu_decomposition.hpp"
 #include "determinant_gauss_jordan.hpp"
+#include "cramer_method.hpp"
 
 #define MAX_ITER 1000
 
@@ -20,6 +21,7 @@ int main(int argc, const char** argv)
     Vector b, solution;
     double epsilon;
     size_t n;
+    int a;
     
     if (argc > 1) {
         if (!strcmp(argv[1], "--default")) {
@@ -37,7 +39,11 @@ int main(int argc, const char** argv)
 	std::cout << "Número de deslocamentos (n): ";
 	std::cin >> n;
 
-	A = get_matrix_from_user(n);
+    std::cout << "a: ";
+    std::cin >> a;
+
+
+	A = mul(get_matrix_from_user(n), a);
 	b = get_b_from_user(n);
 
 	std::cout << "Tolerância (ε): ";
@@ -51,13 +57,14 @@ int main(int argc, const char** argv)
 
     Vector p = solve_using_LU(final, b);
 
-    std::cout << "Solução do sistema [p] usando fatoração LU: [ ";
-    for (auto el : p) {
-        std::cout << el << " ";
-    }
-    std::cout << "]\n";
+    std::cout << "Solução do sistema [p] usando fatoração LU:\n";
+    print_matrix(transpose(Matrix(1, p)));
+    std::cout << std::endl; 
 
-    std::cout << "O determinante da matrix é " << determinant_gauss_jordan(A) << ".\n";
+    std::cout << "O determinante da matriz (calculado via Gauss-Jordan) é " << determinant_gauss_jordan(A) << ".\n";
+
+    std::cout << "\nSolução do sistema através do método de Cramer:\n";
+    print_matrix(transpose(Matrix(1, cramer_method(A, b))));
 
     std::cout << "\nSolução do sistema através do método de Gauss-Seidel:\n";
     print_matrix(transpose(Matrix(1, gauss_seidel(A, b, epsilon, MAX_ITER))));
