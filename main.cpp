@@ -58,45 +58,45 @@ int main(int argc, const char** argv)
 	   } else std::cout << "usage: ./main or ./main --default";
 
     } else {
-    	std::cout << "Número de deslocamentos (n): ";
-    	std::cin >> n;
+        std::cout << "Número de deslocamentos (n): ";
+        std::cin >> n;
 
-        for (size_t i = 0; i < n; ++i) {
-            A = { {10,  1,  1},
-                  { 1, 10,  1},
-                  { 1,  1, 10}};
+        A = get_matrix_from_user(n);
+        std::cout << std::endl;
+        b = get_b_from_user(n);
+        std::cout << std::endl;
 
-            b =  {12, 12, 12};
+        std::cout << "a: ";
+        std::cin >> a;
+        std::cout << std::endl;
 
-            std::cout << "a: ";
-            std::cin >> a;
+        std::cout << "Tolerância (ε): ";
+        std::cin >> epsilon;
+        std::cout << std::endl;
 
-        	std::cout << "Tolerância (ε): ";
-            std::cin >> epsilon;
+        A = mul(A, a);
 
-            A = mul(A, a);
-        
-            LU* final = lu_decomposition(A);
+        LU* final = lu_decomposition(A);
+        Vector p = solve_using_LU(final, b);
 
-            Vector p = solve_using_LU(final, b);
+        std::cout << "Matriz L:\n";
+        print_matrix(final->L);
 
-            std::cout << "Matriz L:\n";
-            print_matrix(final->L);
-            std::cout << "\nMatriz U:\n";
-            print_matrix(final->U);
+        std::cout << "\nMatriz U:\n";
+        print_matrix(final->U);
+        std::cout << std::endl;
 
-            std::cout << "Solução do sistema [p] usando fatoração LU:\n";
-            print_matrix(transpose(Matrix(1, p)));
-            std::cout << std::endl; 
+        std::cout << "Solução do sistema [p] usando fatoração LU:\n";
+        print_matrix(transpose(Matrix(1, p)));
+        std::cout << std::endl;
 
-            std::cout << "O determinante da matriz (calculado via Gauss-Jordan) é " << determinant_gauss_jordan(A) << ".\n";
+        std::cout << "O determinante da matriz (calculado via Gauss-Jordan) é " << determinant_gauss_jordan(A) << ".\n";
 
-            std::cout << "\nSolução do sistema através do método de Cramer:\n";
-            print_matrix(transpose(Matrix(1, cramer_method(A, b))));
+        std::cout << "\nSolução do sistema através do método de Cramer:\n";
+        print_matrix(transpose(Matrix(1, cramer_method(A, b))));
 
-            std::cout << "\nSolução do sistema através do método de Gauss-Seidel:\n";
-            print_matrix(transpose(Matrix(1, gauss_seidel(A, b, epsilon, MAX_ITER))));
-        }
+        std::cout << "\nSolução do sistema através do método de Gauss-Seidel:\n";
+        print_matrix(transpose(Matrix(1, gauss_seidel(A, b, epsilon, MAX_ITER))));
     }
     
     return 0;
